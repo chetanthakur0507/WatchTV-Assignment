@@ -1,4 +1,4 @@
-# 🎬 WatchParty — YouTube Watch Party System (Next.js + MongoDB Edition)
+# 🎬 WatchParty — YouTube Watch Party System 
 
 Watch YouTube videos together in real time! Create a room, share the link, and enjoy synchronized playback across all participants. Play, pause, seek, and change videos while everyone stays in sync using WebSockets.
 
