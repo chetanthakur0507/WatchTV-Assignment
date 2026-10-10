@@ -1,9 +1,17 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
+// @ts-expect-error Next.js loads global CSS as a side-effect import.
 import './globals.css';
 
 export const metadata: Metadata = {
   title: 'WatchParty — Watch YouTube Together',
   description: 'Watch YouTube videos together in perfect sync. Real-time rooms with roles, chat and a shared queue.',
+};
+
+// Without this, phones render the page at desktop width and shrink it —
+// that's what breaks the mobile layout.
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

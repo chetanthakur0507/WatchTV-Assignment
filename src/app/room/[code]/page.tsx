@@ -426,7 +426,9 @@ export default function RoomPage({
 
   // ---------- misc ----------
   const copyLink = async () => {
-    const base = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
+  
+    const base = window.location.origin;
+
     try {
       await navigator.clipboard.writeText(`${base}/room/${code}`);
       pushToast('Room link copied');

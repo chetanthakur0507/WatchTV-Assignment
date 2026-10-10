@@ -263,11 +263,34 @@ body {
 }
 @keyframes slide-in { from { transform: translateX(-12px); opacity: 0; } to { transform: none; opacity: 1; } }
 
+
 /* ---------- responsive ---------- */
 
 @media (max-width: 960px) {
-  .room-body { grid-template-columns: 1fr; }
+  .room-body { grid-template-columns: 1fr; padding: 12px; }
   .sidebar { position: static; max-height: 480px; }
   .room-code .copy-hint { display: none; }
   .controls { flex-wrap: wrap; }
 }
+
+/* phones */
+@media (max-width: 560px) {
+  
+  /* navbar becomes two rows: [logo .... role+leave] / [room code full width] */
+.room-header { padding: 10px 12px; gap: 8px; flex-wrap: wrap; row-gap: 8px; }
+.room-code { order: 3; flex: 1 1 100%; justify-content: center; }
+
+  .logo.small { font-size: 15px; }
+  .room-code { padding: 6px 10px; gap: 6px; }
+  .room-code strong { letter-spacing: 2px; font-size: 14px; }
+  .header-right .btn { padding: 8px 10px; font-size: 13px; }
+  .btn-play { width: 42px; height: 42px; }
+  .controls { gap: 8px; padding: 10px 12px; }
+  .reactions-bar { overflow-x: auto; gap: 6px; }
+  .reactions-bar .label { display: none; }
+  .reaction-btn { font-size: 18px; padding: 6px 9px; flex-shrink: 0; }
+  .gate-card { padding: 24px; }
+  .hero { padding: 24px 16px 40px; }
+  .toasts { left: 12px; right: 12px; bottom: 12px; }
+}
+
