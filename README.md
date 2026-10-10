@@ -6,7 +6,8 @@ Rooms support three roles — **Host, Moderator, and Participant** — with serv
 
 Built using **Next.js, Socket.IO, Node.js, and MongoDB**.
 
-**Live Demo:** [WatchParty Application](https://watchtv-assignment.onrender.com/)
+**Live demo:** _(paste your deployed URL here after deploying)_
+`https://your-app.onrender.com`
 
 ---
 

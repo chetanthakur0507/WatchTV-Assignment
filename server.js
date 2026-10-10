@@ -1,11 +1,4 @@
-/**
- * Custom Next.js server: serves the Next app AND the Socket.IO server
- * on the same HTTP server + connects to MongoDB on boot.
- *
- *   npm run dev   -> Next dev mode + Socket.IO (http://localhost:3000)
- *   npm run build -> next build
- *   npm start     -> production server
- */
+
 const { createServer } = require('http');
 const { parse } = require('url');
 const next = require('next');
@@ -32,11 +25,13 @@ app
     const io = new Server(httpServer, {
       cors: { origin: process.env.NEXT_PUBLIC_APP_URL || `http://localhost:${port}` },
     });
+    
     registerSocketHandlers(io);
 
     httpServer.listen(port, () => {
       console.log(`🚀 WatchParty ready on http://localhost:${port} (${dev ? 'dev' : 'prod'})`);
     });
+
   })
   .catch((err) => {
     console.error('Failed to start:', err.message);

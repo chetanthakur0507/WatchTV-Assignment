@@ -38,11 +38,15 @@ body {
 }
 .logo.small .logo-play { width: 28px; height: 28px; font-size: 12px; }
 
+
+
 .btn {
   border: 1px solid var(--border); background: var(--panel-2); color: var(--text);
   border-radius: 10px; padding: 10px 16px; font-size: 14px; font-weight: 600;
   cursor: pointer; transition: transform 0.08s ease, background 0.15s ease, opacity 0.15s;
 }
+
+
 .btn:hover:not(:disabled) { background: #22222f; }
 .btn:active:not(:disabled) { transform: scale(0.97); }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; }
@@ -53,6 +57,8 @@ body {
 .btn-sm { padding: 6px 10px; font-size: 12px; border-radius: 8px; }
 .btn-block { width: 100%; margin-top: 6px; }
 
+
+
 .input {
   width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text);
   border-radius: 10px; padding: 12px 14px; font-size: 14px; outline: none; margin-bottom: 10px;
@@ -60,6 +66,7 @@ body {
 .input:focus { border-color: var(--accent); }
 .code-input { text-transform: uppercase; letter-spacing: 3px; font-weight: 700; text-align: center; }
 .error { color: #ff6b6b; font-size: 13px; }
+
 
 .role-badge {
   font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px;
@@ -74,6 +81,8 @@ body {
 .status-dot.off { background: #ff6b6b; }
 
 /* ---------- landing ---------- */
+
+
 
 .landing { min-height: 100vh; display: flex; flex-direction: column; }
 .landing-header { padding: 22px 32px; }
@@ -91,7 +100,8 @@ body {
 .feature p { margin: 0; font-size: 13px; line-height: 1.5; }
 .landing-footer { text-align: center; padding: 24px; font-size: 13px; border-top: 1px solid var(--border); }
 
-/* ---------- join gate ---------- */
+/* join gate  */
+
 
 .gate { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
 .gate-card {
@@ -102,7 +112,7 @@ body {
 .gate-card .logo { justify-content: center; margin-bottom: 8px; }
 .gate-card h2 { margin: 0; }
 
-/* ---------- room ---------- */
+/* room  */
 
 .room { min-height: 100vh; display: flex; flex-direction: column; }
 .room-header {
@@ -111,11 +121,14 @@ body {
   background: rgba(20, 20, 28, 0.8); backdrop-filter: blur(8px);
   position: sticky; top: 0; z-index: 10;
 }
+
+
 .room-code {
   display: flex; align-items: center; gap: 10px; background: var(--panel);
   border: 1px solid var(--border); border-radius: 10px; padding: 8px 14px;
   cursor: pointer; font-size: 14px;
 }
+
 .room-code strong { letter-spacing: 3px; font-size: 16px; }
 .room-code .muted { font-size: 11px; letter-spacing: 1px; }
 .copy-hint { font-size: 12px; color: var(--muted); }

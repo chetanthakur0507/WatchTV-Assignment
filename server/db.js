@@ -1,25 +1,23 @@
-/**
- * MongoDB connection + Mongoose schemas.
- *
- * Collections:
- *   rooms     - persistent room state (video, playback, queue, host)
- *   chats     - chat history per room (trimmed to last 100)
- *
- * Participants are intentionally NOT persisted: they are live socket-bound
- * sessions. Rooms themselves survive restarts (bonus: "persistent rooms").
- */
 const mongoose = require('mongoose');
 
 let connected = false;
 
 async function connectDB() {
-  if (connected) return mongoose;
+
+  if(connected) {
+    return mongoose;
+  }
+
   const uri = process.env.MONGODB_URI;
+
   if (!uri) {
     throw new Error('MONGODB_URI is not set — copy .env.example to .env first');
   }
+
   await mongoose.connect(uri);
+
   connected = true;
+  
   console.log('✅ MongoDB connected');
   return mongoose;
 }

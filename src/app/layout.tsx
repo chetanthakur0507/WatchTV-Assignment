@@ -7,8 +7,7 @@ export const metadata: Metadata = {
   description: 'Watch YouTube videos together in perfect sync. Real-time rooms with roles, chat and a shared queue.',
 };
 
-// Without this, phones render the page at desktop width and shrink it —
-// that's what breaks the mobile layout.
+
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,

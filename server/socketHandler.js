@@ -1,17 +1,4 @@
-/**
- * Socket.IO event handlers.
- *
- * Client -> Server: join_room, leave_room, play, pause, seek, change_video,
- *   assign_role, transfer_host, remove_participant, chat_message,
- *   control_request, control_decision, queue_add, queue_remove, queue_play,
- *   video_ended, reaction, typing, get_state
- * Server -> Client: room_joined(ack), sync_state, user_joined, user_left,
- *   role_assigned, participant_removed, removed, chat_message, queue_updated,
- *   reaction, user_typing, control_requested, control_resolved, error
- *
- * Permission checks happen HERE on the server — the UI disabling buttons is
- * only cosmetic. Room state is persisted to MongoDB via RoomManager.
- */
+
 const { v4: uuidv4 } = require('uuid');
 const { Participant, RoomManager } = require('./roomManager');
 
@@ -58,7 +45,7 @@ function registerSocketHandlers(io) {
   }
 
   io.on('connection', (socket) => {
-    // ---------------- join / leave ----------------
+    //join/ leave 
     socket.on('join_room', async ({ roomCode, username }, ack = () => {}) => {
       try {
         if (!roomCode || !username?.trim()) return ack({ ok: false, error: 'roomCode and username are required' });
@@ -93,7 +80,7 @@ function registerSocketHandlers(io) {
     socket.on('leave_room', () => leaveRoom(socket));
     socket.on('disconnect', () => leaveRoom(socket));
 
-    // ---------------- permission gate ----------------
+    //  permission gate
     const requireControl = (socket, ack) => {
       const ctx = resolveParticipant(socket);
       if (!ctx) {
@@ -108,7 +95,7 @@ function registerSocketHandlers(io) {
       return ctx;
     };
 
-    // ---------------- playback ----------------
+    // playback 
     socket.on('play', (maybeAck, maybeAck2) => {
       const ack = typeof maybeAck === 'function' ? maybeAck : maybeAck2 || (() => {});
       const ctx = requireControl(socket, ack);
@@ -119,6 +106,8 @@ function registerSocketHandlers(io) {
       ack({ ok: true });
     });
 
+
+
     socket.on('pause', ({ time } = {}, ack = () => {}) => {
       const ctx = requireControl(socket, ack);
       if (!ctx) return;
@@ -126,6 +115,7 @@ function registerSocketHandlers(io) {
       manager.schedulePersist(ctx.room);
       ctx.room.broadcast(io, 'sync_state', ctx.room.getState());
       ack({ ok: true });
+
     });
 
     socket.on('seek', ({ time }, ack = () => {}) => {
@@ -136,6 +126,7 @@ function registerSocketHandlers(io) {
       ctx.room.broadcast(io, 'sync_state', ctx.room.getState());
       ack({ ok: true });
     });
+
 
     socket.on('change_video', ({ videoId }, ack = () => {}) => {
       const ctx = requireControl(socket, ack);
@@ -148,6 +139,8 @@ function registerSocketHandlers(io) {
 
     // Auto-advance: when the video ends, play the next queued video.
     // Accepts both emit('video_ended') and emit('video_ended', {}).
+
+
     socket.on('video_ended', (maybeAck, maybeAck2) => {
       const ack = typeof maybeAck === 'function' ? maybeAck : maybeAck2 || (() => {});
       const ctx = requireControl(socket, ack);
@@ -161,7 +154,11 @@ function registerSocketHandlers(io) {
       ack({ ok: true, advanced: !!next });
     });
 
-    // ---------------- video queue ("Up next") ----------------
+
+
+    //  video queue(Up next) 
+
+
     // Anyone (even participants) can suggest videos; only host/mod can play/remove.
     socket.on('queue_add', ({ videoId }, ack = () => {}) => {
       const ctx = resolveParticipant(socket);
