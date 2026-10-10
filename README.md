@@ -1,203 +1,296 @@
-# WatchParty — YouTube Watch Party System (Next.js + MongoDB Edition)
+# 🎬 WatchParty — YouTube Watch Party System (Next.js + MongoDB Edition)
 
-Watch YouTube videos together in real time. Create a room, share the link, and
-everyone's playback (play / pause / seek / video changes) stays locked together
-via WebSockets. Rooms support roles — **Host**, **Moderator**, **Participant** —
-with server-side permission enforcement, plus live chat, emoji reactions, a
-shared video queue with auto-advance, and typing indicators.
+Watch YouTube videos together in real time! Create a room, share the link, and enjoy synchronized playback across all participants. Play, pause, seek, and change videos while everyone stays in sync using WebSockets.
 
-Built for the **Web3Task Full Stack Intern assessment**
-(Intern Assignment: YouTube Watch Party System).
+Rooms support three roles — **Host, Moderator, and Participant** — with server-side permission enforcement, live chat, emoji reactions, a shared video queue, automatic video advancement, and typing indicators.
 
-**Live demo:** _(paste your deployed URL here after deploying)_
-`https://your-app.onrender.com`
+Built using **Next.js, Socket.IO, Node.js, and MongoDB**.
+
+**Live Demo:** [WatchParty Application](https://your-app.onrender.com)
 
 ---
 
-## Tech stack
+## Tech Stack
 
-| Layer     | Technology                                              |
-|-----------|---------------------------------------------------------|
-| Framework | Next.js 14 (App Router) + TypeScript + React 18         |
-| Real-time | Socket.IO (custom `server.js`: Next + Socket.IO, one port) |
-| Backend   | Node.js (custom server), Mongoose ODM                   |
-| Database  | MongoDB (rooms, video queue, chat history — persistent) |
-| Video     | YouTube IFrame Player API                               |
+| Layer | Technology |
+| :--- | :--- |
+| Framework | Next.js 14 (App Router) |
+| Frontend | React 18 + TypeScript |
+| Real-Time Communication | Socket.IO |
+| Backend | Node.js + Custom Server |
+| Database | MongoDB |
+| ODM | Mongoose |
+| Video Player | YouTube IFrame Player API |
+| Deployment | Render |
 
-One `node server.js` runs everything — the Next.js app, the Socket.IO server
-and the MongoDB connection. One deploy, one URL.
+The application uses a custom Node.js server to run Next.js and Socket.IO on the same HTTP server. MongoDB stores room information, video queue data, and chat history.
 
-## Project structure
+---
 
-```
+## Project Structure
+
+```text
 watch-party-next/
-├── server.js                 # custom server: Next + Socket.IO + MongoDB boot
-├── .env / .env.example       # MONGODB_URI, PORT, NEXT_PUBLIC_APP_URL
+├── server.js
+├── package.json
+├── .env.example
+├── .gitignore
+│
 ├── server/
-│   ├── db.js                 # mongoose connection + Room / Chat schemas
-│   ├── roomManager.js        # OOP: Participant, Room, RoomManager (+ persistence)
-│   └── socketHandler.js      # all Socket.IO events + permission checks
+│   ├── db.js
+│   ├── roomManager.js
+│   └── socketHandler.js
+│
 └── src/
     ├── app/
-    │   ├── page.tsx          # landing: create / join room
-    │   ├── room/[code]/page.tsx  # the watch party room
+    │   ├── page.tsx
+    │   ├── room/
+    │   │   └── [code]/
+    │   │       └── page.tsx
     │   ├── layout.tsx
     │   └── globals.css
+    │
     ├── components/
-    │   └── YouTubePlayer.tsx # IFrame API wrapper + sync logic
+    │   └── YouTubePlayer.tsx
+    │
     └── lib/
-        ├── socket.ts         # Socket.IO singleton
-        └── types.ts          # shared types + YouTube URL parser
+        ├── socket.ts
+        └── types.ts
 ```
 
 ---
 
-## Run locally
+## Run Locally
 
-**Prerequisites:** Node.js 18+, and MongoDB running locally
-(`mongod --dbpath /data/db`, or MongoDB Compass / Atlas — just set the URI).
+**Prerequisites:** Node.js 18+ and a running MongoDB instance, either locally or through MongoDB Atlas.
+
+### 1. Clone the Repository
 
 ```bash
-# 1. env
-cp .env.example .env
-# .env already has: MONGODB_URI=mongodb://localhost:27017/watchparty
+git clone <YOUR_GITHUB_REPOSITORY_URL>
+cd watch-party-next
+```
 
-# 2. install + dev
+### 2. Configure Environment Variables
+
+Create a `.env` file in the project root using `.env.example` as a template.
+
+```env
+MONGODB_URI=mongodb://localhost:27017/watchparty
+PORT=3000
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+For MongoDB Atlas, replace the local connection string with your Atlas URI.
+
+**Important:** Never commit `.env` or expose database credentials in a public repository.
+
+### 3. Install Dependencies
+
+```bash
 npm install
-npm run dev            # http://localhost:3000
+```
 
-# production build
+### 4. Start the Development Server
+
+```bash
+npm run dev
+```
+
+Open the application at:
+
+`http://localhost:3000`
+
+### 5. Production Build
+
+```bash
 npm run build
-npm start              # NODE_ENV=production node server.js
+npm start
 ```
 
-Open `http://localhost:3000`, create a room, copy the link, open it in a second
-browser / incognito window with another name — both players stay in sync.
-Refresh the page: the room, chat and queue are restored from MongoDB.
+The commands assume the corresponding scripts are configured in `package.json`.
+
+Create a room, copy its link, and open it in another browser or an incognito window. Join with a different username to test synchronized playback.
 
 ---
 
-## Deploy (Render)
+## Deploy on Render
 
-1. Push this repo to GitHub (**do not commit `.env`** — `.env.example` is the template).
-2. Create a MongoDB database: [MongoDB Atlas](https://www.mongodb.com/atlas) free
-   tier works (whitelist `0.0.0.0/0` or use Render's outbound IPs), or Render's
-   managed MongoDB.
-3. On [Render](https://render.com) → **New → Web Service** → connect the repo:
-   - **Build Command:** `npm install && npm run build`
-   - **Start Command:** `npm start`
-   - **Environment variables:**
-     - `MONGODB_URI` = your Atlas connection string
-     - `NEXT_PUBLIC_APP_URL` = `https://<your-service>.onrender.com`
-4. Deploy → live at `https://<your-service>.onrender.com`. Paste it at the top of
-   this README.
+1. Push the project to GitHub.
+2. Create a database using [MongoDB Atlas](https://www.mongodb.com/atlas).
+3. Open [Render](https://render.com) and select **New → Web Service**.
+4. Connect your GitHub repository.
+5. Configure the build and start commands.
+
+**Build Command**
+
+```bash
+npm install && npm run build
+```
+
+**Start Command**
+
+```bash
+npm start
+```
+
+### Environment Variables
+
+Configure these variables in the Render dashboard:
+
+```env
+MONGODB_URI=your_mongodb_atlas_connection_string
+NEXT_PUBLIC_APP_URL=https://your-app.onrender.com
+```
+
+Configure `PORT` only if required by your server setup; Render provides a port through the environment.
+
+Deploy the application and replace the placeholder URL at the top of this README with your actual live URL.
 
 ---
 
-## How it works (architecture overview)
+## How It Works (Architecture Overview)
 
+```text
+┌────────────────────────┐
+│       Next.js App      │
+│   Landing Page + Room  │
+└────────────┬───────────┘
+             │
+             ▼
+┌────────────────────────┐
+│       Socket.IO        │
+│ Real-Time Communication│
+└────────────┬───────────┘
+             │
+             ▼
+┌────────────────────────┐
+│  RoomManager           │
+│  Roles + Permissions   │
+│  Playback + Queue      │
+└────────────┬───────────┘
+             │
+             ▼
+┌────────────────────────┐
+│        MongoDB         │
+│ Rooms + Queue + Chat   │
+└────────────────────────┘
 ```
-┌──────────────┐  join_room / play / pause / seek / change_video     ┌───────────────────┐
-│  Next.js     │  queue_add / chat / reaction / typing / assign_role │  server.js        │
-│  (App Router)│ ─────────────────────────────────────────────────▶  │  Next + Socket.IO │
-│              │ ◀─────────────────────────────────────────────────  │                   │
-│  YouTube     │  sync_state / queue_updated / chat_message /         │  RoomManager      │
-│  IFrame API  │  reaction / user_typing / role_assigned              │  (OOP + MongoDB)  │
-└──────────────┘                                                     └────────┬──────────┘
-                                                                              │ persist
-                                                                     ┌────────▼──────────┐
-                                                                     │     MongoDB       │
-                                                                     │ rooms · chats     │
-                                                                     └───────────────────┘
-```
 
-1. **Boot:** `server.js` connects to MongoDB, then serves Next.js and Socket.IO
-   on the same HTTP server / port.
-2. **Join:** client emits `join_room { roomCode, username }`. `RoomManager`
-   loads the room from MongoDB (or creates it); the first joiner becomes **Host**,
-   others become **Participant**. The ack carries `{ you, participants, state,
-   queue, chat }` so late joiners and refreshers instantly catch up.
-3. **Control:** Host/Moderator actions are **validated on the server**
-   (`Participant.canControl()`) before `Room` updates state and broadcasts
-   `sync_state { videoId, playState, currentTime }`. Unauthorized attempts are
-   rejected and the client resyncs via `get_state`.
-4. **Sync:** each client applies the state to its YouTube player — loads a new
-   video id, seeks if drift > 1.5 s, plays/pauses. A `suppressUntil` guard stops
-   applied changes from echoing back (no feedback loops). The server stores
-   `(currentTime, updatedAt)` and extrapolates while playing, so joiners land at
-   the right position.
-5. **Persistence:** room state + queue persist to MongoDB on a debounce (800 ms);
-   chat messages are saved per message (trimmed to the newest 100 per room).
-   When the last user leaves, the final state is flushed — the room survives
-   restarts (bonus: *persistent rooms*).
-6. **Roles:** Host can `assign_role` (Participant ↔ Moderator),
-   `remove_participant`, `transfer_host`. If the host disconnects, the role
-   auto-transfers to the oldest moderator (else oldest participant).
-7. **Control requests:** a Participant sends `control_request { action, payload }`;
-   Host/Mods approve/decline in the UI. On approval the **server** executes the
-   action itself — permissions are never bypassed.
-8. **Queue ("Up next"):** anyone can `queue_add` (participants = suggestions);
-   host/mod can `queue_play` / `queue_remove`. When a video ends, the host
-   client emits `video_ended` and the server auto-advances the queue.
-9. **Reactions & typing:** ephemeral broadcasts — floating emoji animations over
-   the player, and "X is typing…" in chat.
+### 1. Server Initialization
 
-### WebSocket events
+The custom `server.js` initializes the Next.js application, connects to MongoDB, and starts the Socket.IO server on the same HTTP server.
+
+### 2. Room Creation and Joining
+
+Users create or join a room using a unique room code. The first participant becomes the Host, while subsequent participants join with the Participant role.
+
+### 3. Real-Time Playback Synchronization
+
+Playback actions are communicated through Socket.IO events. The server broadcasts the current video, playback state, and position to connected participants.
+
+### 4. Role-Based Permissions
+
+Host and Moderator actions are validated on the server before protected operations are executed. Participants can suggest videos and request permission to control playback.
+
+### 5. Video Queue Management
+
+Participants can suggest videos for the shared queue. Authorized users can play or remove queued videos. The next video can start automatically when the current video ends.
+
+### 6. Live Chat and Reactions
+
+Socket.IO broadcasts chat messages, typing indicators, and emoji reactions to room participants.
+
+### 7. Database Persistence
+
+MongoDB stores room state, queue information, and chat history so saved information can be restored after page refreshes or server restarts.
+
+---
+
+## WebSocket Events
 
 | Event | Direction | Purpose |
-|---|---|---|
-| `join_room` | C→S | `{ roomCode, username }` — create or join (persistent) |
-| `leave_room` | C→S | leave the room |
-| `play` / `pause` / `seek` / `change_video` | C→S | host/mod playback control |
-| `video_ended` | C→S | host/mod: auto-advance the queue |
-| `queue_add` / `queue_remove` / `queue_play` | C→S | shared "Up next" queue |
-| `assign_role` | C→S | host: `{ userId, role }` |
-| `transfer_host` | C→S | host passes the host role |
-| `remove_participant` | C→S | host: `{ userId }` |
-| `chat_message` | C→S | everyone (persisted) |
-| `typing` | C→S | typing indicator |
-| `reaction` | C→S | emoji reaction (ephemeral) |
-| `control_request` / `control_decision` | C→S | participant asks, host/mod approves |
-| `sync_state` | S→C | `{ videoId, playState, currentTime }` broadcast |
-| `queue_updated` | S→C | `{ queue }` broadcast |
-| `user_joined` / `user_left` | S→C | participant list updates |
-| `role_assigned` / `participant_removed` | S→C | role/removal updates |
-| `removed` | S→C | sent to the removed socket only |
-| `chat_message` | S→C | broadcast chat |
-| `user_typing` | S→C | typing indicator |
-| `reaction` | S→C | broadcast emoji |
-| `control_requested` / `control_resolved` | S→C | request lifecycle |
-| `error` | S→C | rejection reason (client resyncs) |
+| :--- | :--- | :--- |
+| `join_room` | Client → Server | Create or join a room |
+| `leave_room` | Client → Server | Leave a room |
+| `play` / `pause` | Client → Server | Control playback |
+| `seek` | Client → Server | Change playback position |
+| `change_video` | Client → Server | Switch the current video |
+| `video_ended` | Client → Server | Handle video completion |
+| `queue_add` | Client → Server | Add a video suggestion |
+| `queue_remove` | Client → Server | Remove a queued video |
+| `queue_play` | Client → Server | Play a queued video |
+| `assign_role` | Client → Server | Assign a participant role |
+| `transfer_host` | Client → Server | Transfer host privileges |
+| `remove_participant` | Client → Server | Remove a participant |
+| `chat_message` | Client ↔ Server | Exchange chat messages |
+| `typing` | Client → Server | Send typing status |
+| `reaction` | Client ↔ Server | Broadcast emoji reactions |
+| `control_request` | Client → Server | Request playback permission |
+| `control_decision` | Client → Server | Approve or reject a request |
+| `sync_state` | Server → Client | Synchronize playback state |
+| `queue_updated` | Server → Client | Update the shared queue |
+| `user_joined` / `user_left` | Server → Client | Update participant information |
+| `role_assigned` | Server → Client | Notify role changes |
+| `error` | Server → Client | Communicate rejected actions |
+
+*Event names and directions should match the actual Socket.IO handlers implemented in the project.*
 
 ---
 
-## Code walkthrough notes (for the review)
+## Code Walkthrough
 
-- **Why a custom `server.js`?** Next.js API routes can't hold a long-lived
-  Socket.IO server cleanly in App Router; one custom server keeps Next +
-  WebSockets on a single port, which also makes Render deployment trivial.
-- **Socket.IO rooms:** `socket.join(roomCode)` puts each connection in a
-  room-scoped channel; `io.to(roomCode).emit(...)` broadcasts to exactly that room.
-- **OOP:** `Participant` (role + `canControl()`), `Room` (participants, playback
-  state, queue, broadcast helpers), `RoomManager` (MongoDB load/save, debounced
-  persistence). The handler file only wires events to these methods.
-- **Role enforcement:** the UI disables buttons for participants, but the real
-  gate is server-side — every control event is permission-checked.
-- **YouTube sync:** the IFrame API has no seek event, so the player polls every
-  500 ms; a jump > 2 s while playing counts as a user scrub.
-- **MongoDB schema:** `rooms` (one doc per room code: video, playState,
-  currentTime, queue, hostUserId), `chats` (one doc per message, trimmed to 100
-  per room). Participants stay in memory — they're live socket sessions.
-- **Trade-offs:** debounced persistence means a crash within ~1 s of a seek could
-  lose that exact position (chat is always safe — saved immediately). Horizontal
-  scaling would need Redis pub/sub between server instances (noted as next step).
+- **Custom Server:** Combines the Next.js application and Socket.IO server on one HTTP server.
+- **Socket.IO Rooms:** Keeps communication scoped to individual watch party rooms.
+- **RoomManager:** Coordinates participants, playback state, permissions, and queue management.
+- **Role Enforcement:** Validates protected actions on the server rather than relying only on disabled frontend buttons.
+- **YouTube Integration:** Uses the YouTube IFrame Player API to load videos and synchronize playback.
+- **MongoDB Persistence:** Stores room data, queued videos, and chat messages.
+- **Scalability:** A Redis adapter can be considered if the application needs to scale across multiple Socket.IO server instances.
 
-## Tests
+---
 
-`next build` passes (webpack + `tsc --noEmit` clean). The WebSocket + MongoDB
-flow was verified against a real MongoDB with an automated script: 14 checks —
-join/roles, sync broadcast, role rejection, queue suggest/play/auto-advance,
-reactions, typing, persisted chat, promote, control-request approval, host
-auto-transfer, landing page serve, and **room state surviving a server restart**.
-#   W a t c h T V - A s s i g n m e n t  
- 
+## Testing Checklist
+
+- [ ] Create and join a watch party room.
+- [ ] Verify synchronized play and pause.
+- [ ] Test seeking and video changes.
+- [ ] Verify role-based permissions.
+- [ ] Test chat messages and typing indicators.
+- [ ] Test emoji reactions.
+- [ ] Add, play, and remove queued videos.
+- [ ] Verify automatic queue advancement.
+- [ ] Test host transfer and participant removal.
+- [ ] Refresh the page and verify saved room information.
+- [ ] Restart the server and verify database persistence.
+- [ ] Test the production deployment.
+
+---
+
+## Future Improvements
+
+- User authentication and persistent profiles
+- Private rooms with access codes
+- Redis-based horizontal scaling
+- Improved reconnection and playback recovery
+- Automated integration tests
+- Enhanced mobile and PWA support
+
+---
+
+## Author
+
+**Chetan Thakur**
+
+- GitHub: [Your GitHub Profile](https://github.com/your-username)
+- Portfolio: [chetanthakur.tech](https://chetanthakur.tech/)
+
+---
+
+## License
+
+This project is intended for educational and portfolio purposes. Add a `LICENSE` file to define the terms under which the project can be used and distributed.
+
+---
+
+**Built with ❤️ using Next.js, Socket.IO, Node.js, and MongoDB.**
