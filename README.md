@@ -6,7 +6,7 @@ Rooms support three roles — **Host, Moderator, and Participant** — with serv
 
 Built using **Next.js, Socket.IO, Node.js, and MongoDB**.
 
-**Live Demo:** [WatchParty Application](https://your-app.onrender.com)
+**Live Demo:** [WatchParty Application](https://watchtv-assignment.onrender.com/)
 
 ---
 
@@ -67,7 +67,7 @@ watch-party-next/
 ### 1. Clone the Repository
 
 ```bash
-git clone <YOUR_GITHUB_REPOSITORY_URL>
+git clone <https://github.com/chetanthakur0507/WatchTV-Assignment>
 cd watch-party-next
 ```
 
@@ -132,6 +132,7 @@ npm install && npm run build
 
 ```bash
 npm start
+npm run dev
 ```
 
 ### Environment Variables
@@ -282,8 +283,9 @@ MongoDB stores room state, queue information, and chat history so saved informat
 
 **Chetan Thakur**
 
-- GitHub: [Your GitHub Profile](https://github.com/your-username)
-- Portfolio: [chetanthakur.tech](https://chetanthakur.tech/)
+- GitHub: [GitHub Profile](https://github.com/chetanthakur0507)
+- Github Repo.: [Project Repository](https://github.com/chetanthakur0507/WatchTV-Assignment)
+- Live Project: [Live Project](https://watchtv-assignment.onrender.com/)
 
 ---
 
