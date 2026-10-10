@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-// @ts-expect-error Next.js loads global CSS as a side-effect import.
+
 import './globals.css';
 
 export const metadata: Metadata = {
